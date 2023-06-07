@@ -75,11 +75,22 @@ public abstract class VotingStrategy {
         }
 
         Candidate electPresident = sortedPresidentRank.get(0);
-        builder.append("\n\n  Presidente eleito:\n");
-        builder.append("  " + electPresident.name + " do " + electPresident.party + " com "
-            + decimalFormater.format((double) electPresident.numVotes / (double) totalVotesP * 100) + "% dos votos\n");
-        builder.append("\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n");
-    
+        
+		double presidentPercentage = (double) electPresident.numVotes / (double) totalVotesP * 100;
+		double nullFederalDeputyPercentage = (double) nullFederalDeputyVotes / (double) totalVotesFD * 100;
+		double federalDeputyProtestPercentage = (double) federalDeputyProtestVotes / (double) totalVotesFD * 100;
+
+		builder.append("\n\n  Presidente eleito:\n");
+		builder.append("  " + electPresident.name + " do " + electPresident.party + " com "
+			+ decimalFormater.format(presidentPercentage) + "% dos votos\n");
+
+		if (presidentPercentage >= 50) {
+			builder.append("A eleição foi decidida no primeiro turno!");
+		} else {
+			builder.append("Eleição será decidida no segundo turno!");
+		}
+        
+        builder.append("\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n\n");        
         builder.append("\n\n  Votos deputado federal:\n");
         builder.append("  Votos nulos: " + this.nullFederalDeputyVotes + " ("
             + decimalFormater.format((double) this.nullFederalDeputyVotes / (double) totalVotesFD * 100) + "%)\n");
